@@ -5,23 +5,33 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
+    "export": "next build && next export",
+    "build:static": "next build && node scripts/create-404-page.js",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "deploy:aws": "npm run build:static && node scripts/deploy-aws.js",
+    "deploy:s3": "aws s3 sync out/ s3://$S3_BUCKET_NAME --delete",
+    "invalidate:cloudfront": "aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths '/*'"
   },
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.896.0",
+    "@hookform/resolvers": "^5.2.2",
+    "framer-motion": "^12.23.22",
+    "next": "15.5.4",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "next": "15.5.4"
+    "react-hook-form": "^7.63.0",
+    "zod": "^4.1.11"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
-    "@eslint/eslintrc": "^3"
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }
