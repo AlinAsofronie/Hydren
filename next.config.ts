@@ -1,20 +1,24 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: 'export',
-  trailingSlash: true,
-  skipTrailingSlashRedirect: true,
-  distDir: 'out',
+  // Standard Next.js configuration for development
+  // Remove static export settings for local development
   images: {
-    unoptimized: true,
-    loader: 'custom',
-    loaderFile: './src/lib/imageLoader.ts'
+    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
-  assetPrefix: process.env.NODE_ENV === 'production' ? process.env.ASSET_PREFIX : '',
-  basePath: process.env.NODE_ENV === 'production' ? process.env.BASE_PATH || '' : ''
+  // Enable when needed for static deployment
+  // output: 'export',
+  // trailingSlash: true,
+  // distDir: 'out',
 };
 
 export default nextConfig;

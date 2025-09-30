@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { EmailService, EmailData } from '@/lib/aws-ses'
 
+// Check if running in development mode
+const isDevelopment = process.env.NODE_ENV === 'development'
+
 // Validation schema matching the frontend
 const contactFormSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -117,7 +120,25 @@ export async function POST(request: NextRequest) {
       )
     }
     
-    // Verify required environment variables
+    // In development mode, just log the form data instead of sending emails
+    if (isDevelopment) {
+      console.log('📧 Contact form submission (Development Mode):')
+      console.log('From:', sanitizedData.email)
+      console.log('Name:', sanitizedData.name)
+      console.log('Organization:', sanitizedData.organization)
+      console.log('Service:', sanitizedData.service)
+      console.log('Urgency:', sanitizedData.urgency)
+      console.log('Message:', sanitizedData.message)
+      console.log('Phone:', sanitizedData.phone)
+      console.log('Org Type:', sanitizedData.organizationType)
+      
+      return NextResponse.json(
+        { message: 'Message received successfully! (Development mode - email logged to console)' },
+        { status: 200 }
+      )
+    }
+    
+    // Verify required environment variables for production
     if (!process.env.AWS_ACCESS_KEY_ID || 
         !process.env.AWS_SECRET_ACCESS_KEY || 
         !process.env.SES_FROM_EMAIL ||

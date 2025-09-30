@@ -5,10 +5,14 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
-    "export": "next build && next export",
-    "build:static": "next build && node scripts/create-404-page.js",
     "start": "next start",
     "lint": "eslint",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "clean": "rm -rf .next out",
+    "export": "next build && next export",
+    "build:static": "next build && node scripts/create-404-page.js",
     "deploy:aws": "npm run build:static && node scripts/deploy-aws.js",
     "deploy:s3": "aws s3 sync out/ s3://$S3_BUCKET_NAME --delete",
     "invalidate:cloudfront": "aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths '/*'"
