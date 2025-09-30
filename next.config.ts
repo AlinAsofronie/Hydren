@@ -14,11 +14,7 @@ const nextConfig: NextConfig = {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
   assetPrefix: process.env.NODE_ENV === 'production' ? process.env.ASSET_PREFIX : '',
-  basePath: process.env.NODE_ENV === 'production' ? process.env.BASE_PATH || '' : '',
-  experimental: {
-    // Optimize for static export
-    optimizeCss: true,
-  }
+  basePath: process.env.NODE_ENV === 'production' ? process.env.BASE_PATH || '' : ''
 };
 
 export default nextConfig;

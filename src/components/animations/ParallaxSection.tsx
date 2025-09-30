@@ -1,8 +1,8 @@
 'use client'
 
 import { motion, useTransform } from 'framer-motion'
-import { ReactNode } from 'react'
-import { useScrollAnimation, useScrollTransforms } from '@/hooks/useScrollAnimation'
+import { ReactNode, useState } from 'react'
+import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
 interface ParallaxSectionProps {
   children: ReactNode
@@ -75,22 +75,25 @@ export function LayeredParallax({
 }) {
   const { ref, scrollYProgress } = useScrollAnimation()
 
+  // Create fixed array of speeds and their corresponding transforms
+  const layerSpeeds = Array.from({ length: layers }, (_, i) => (i + 1) * 20)
+  const layer1Y = useTransform(scrollYProgress, [0, 1], [0, -layerSpeeds[0] || 0])
+  const layer2Y = useTransform(scrollYProgress, [0, 1], [0, -layerSpeeds[1] || 0])
+  const layer3Y = useTransform(scrollYProgress, [0, 1], [0, -layerSpeeds[2] || 0])
+  
+  const transforms = [layer1Y, layer2Y, layer3Y]
+
   return (
     <div ref={ref} className={`relative ${className}`}>
-      {Array.from({ length: layers }, (_, i) => {
-        const speed = (i + 1) * 20
-        const y = useTransform(scrollYProgress, [0, 1], [0, -speed])
-        
-        return (
-          <motion.div
-            key={i}
-            style={{ y }}
-            className={`absolute inset-0 ${i > 0 ? 'opacity-70' : ''}`}
-          >
-            {i === 0 ? children : null}
-          </motion.div>
-        )
-      })}
+      {Array.from({ length: layers }, (_, i) => (
+        <motion.div
+          key={i}
+          style={{ y: transforms[i] || 0 }}
+          className={`absolute inset-0 ${i > 0 ? 'opacity-70' : ''}`}
+        >
+          {i === 0 ? children : null}
+        </motion.div>
+      ))}
     </div>
   )
 }
@@ -193,6 +196,8 @@ export function AnimatedCounter({
   suffix?: string
   className?: string
 }) {
+  const [count, setCount] = useState(0)
+
   return (
     <motion.span
       className={className}
@@ -200,24 +205,22 @@ export function AnimatedCounter({
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-    >
-      <motion.span
-        initial={{ textContent: '0' }}
-        whileInView={{ textContent: end.toString() }}
-        viewport={{ once: true }}
-        transition={{
-          duration,
-          ease: 'easeOut',
-          delay: 0.2
-        }}
-        onUpdate={(latest) => {
-          if (typeof latest.textContent === 'string') {
-            const current = parseInt(latest.textContent)
-            latest.textContent = Math.round(current).toString()
+      onViewportEnter={() => {
+        const startTime = Date.now()
+        const animate = () => {
+          const now = Date.now()
+          const progress = Math.min((now - startTime) / (duration * 1000), 1)
+          const easeOut = 1 - Math.pow(1 - progress, 3)
+          setCount(Math.round(end * easeOut))
+          
+          if (progress < 1) {
+            requestAnimationFrame(animate)
           }
-        }}
-      />
-      {suffix}
+        }
+        requestAnimationFrame(animate)
+      }}
+    >
+      {count}{suffix}
     </motion.span>
   )
 }

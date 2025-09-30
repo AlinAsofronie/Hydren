@@ -1,13 +1,10 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { AnimatedCard } from '@/components/ui/AnimatedCard'
 import { AnimatedButton } from '@/components/ui/AnimatedButton'
-import { FadeInSection } from '@/components/ui/FadeInSection'
 import { HeroSection } from '@/components/HeroSection'
 import { ParallaxSection, SmoothReveal, MagneticElement } from '@/components/animations/ParallaxSection'
 import { ScrollTimeline, FeatureShowcase, ScrollStats } from '@/components/animations/ScrollTimeline'
-import { StaggeredReveal, TextReveal, ScaleReveal, CounterReveal } from '@/components/animations/SmoothReveal'
+import { StaggeredReveal, TextReveal, ScaleReveal } from '@/components/animations/SmoothReveal'
 import { ScrollProgress, CircularScrollProgress, HeroScrollIndicator } from '@/components/animations/ScrollProgress'
 
 export default function Home() {

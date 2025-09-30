@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { ReactNode, useRef } from 'react'
+import Image from 'next/image'
 
 interface TimelineItem {
   id: string
@@ -69,7 +70,7 @@ function TimelineItemComponent({
   item: TimelineItem
   index: number
   totalItems: number
-  scrollProgress: any
+  scrollProgress: ReturnType<typeof useSpring>
 }) {
   const itemRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress: itemProgress } = useScroll({
@@ -142,9 +143,11 @@ function TimelineItemComponent({
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mb-6 rounded-xl overflow-hidden"
           >
-            <img
+            <Image
               src={item.image}
               alt={item.title}
+              width={400}
+              height={192}
               className="w-full h-48 object-cover"
             />
           </motion.div>
@@ -166,23 +169,21 @@ function TimelineItemComponent({
 }
 
 // Apple-style feature showcase with scroll-triggered reveals
+interface Feature {
+  title: string
+  description: string
+  visual: ReactNode
+  details?: string[]
+}
+
 export function FeatureShowcase({
   features,
   className = ''
 }: {
-  features: Array<{
-    title: string
-    description: string
-    visual: ReactNode
-    details?: string[]
-  }>
+  features: Feature[]
   className?: string
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start end', 'end start']
-  })
 
   return (
     <div ref={containerRef} className={`space-y-32 ${className}`}>
@@ -190,7 +191,6 @@ export function FeatureShowcase({
         <FeatureSection
           key={index}
           feature={feature}
-          index={index}
           isReversed={index % 2 === 1}
         />
       ))}
@@ -200,11 +200,9 @@ export function FeatureShowcase({
 
 function FeatureSection({
   feature,
-  index,
   isReversed
 }: {
-  feature: any
-  index: number
+  feature: Feature
   isReversed: boolean
 }) {
   const sectionRef = useRef<HTMLDivElement>(null)

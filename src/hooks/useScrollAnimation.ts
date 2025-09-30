@@ -5,7 +5,7 @@ import { useScroll, useTransform, useSpring, MotionValue } from 'framer-motion'
 
 // Advanced scroll hook with Apple-style smooth animations
 export function useScrollAnimation() {
-  const ref = useRef<HTMLElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start']
@@ -23,13 +23,13 @@ export function useScrollAnimation() {
 
 // Hook for element-specific scroll animations
 export function useElementScroll(options?: {
-  offset?: [string, string]
+  offset?: ["start start" | "start end" | "end start" | "end end", "start start" | "start end" | "end start" | "end end"]
   spring?: { stiffness: number; damping: number }
 }) {
   const ref = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: options?.offset || ['start 0.8', 'start 0.2']
+    offset: options?.offset || ['start end', 'start start']
   })
 
   const smoothProgress = useSpring(scrollYProgress, {
@@ -112,11 +112,14 @@ export function useScrollDirection() {
 }
 
 // Utility function for throttling
-function throttle(func: Function, limit: number) {
+function throttle<T extends (...args: unknown[]) => void>(
+  func: T, 
+  limit: number
+): (...args: Parameters<T>) => void {
   let inThrottle: boolean
-  return function(this: any, ...args: any[]) {
+  return function(...args: Parameters<T>) {
     if (!inThrottle) {
-      func.apply(this, args)
+      func(...args)
       inThrottle = true
       setTimeout(() => inThrottle = false, limit)
     }

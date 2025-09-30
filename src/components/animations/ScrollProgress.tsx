@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useScrollDirection, useViewportScroll } from '@/hooks/useScrollAnimation'
 
 // Main scroll progress indicator
@@ -152,8 +152,19 @@ export function ReadingProgress({
   target?: string
   className?: string
 }) {
+  const targetRef = useRef<HTMLElement>(null)
+  
+  useEffect(() => {
+    if (target) {
+      const element = document.querySelector(target) as HTMLElement
+      if (element) {
+        targetRef.current = element
+      }
+    }
+  }, [target])
+
   const { scrollYProgress } = useScroll({
-    target: target ? document.querySelector(target) || undefined : undefined,
+    target: targetRef,
     offset: ['start start', 'end end']
   })
 

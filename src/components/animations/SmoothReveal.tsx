@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, useInView, Variants } from 'framer-motion'
-import { ReactNode, useRef } from 'react'
+import { ReactNode, useRef, useState, useEffect } from 'react'
 
 // Apple-style reveal animations with smooth easing
 const appleEasing = [0.4, 0, 0.2, 1] as const
@@ -425,6 +425,25 @@ export function CounterReveal({
 }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.5 })
+  const [count, setCount] = useState(from)
+
+  useEffect(() => {
+    if (isInView) {
+      const startTime = Date.now()
+      const animate = () => {
+        const now = Date.now()
+        const progress = Math.min((now - startTime) / (duration * 1000), 1)
+        const easeOut = 1 - Math.pow(1 - progress, 3)
+        const currentValue = from + (to - from) * easeOut
+        setCount(Math.round(currentValue))
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate)
+        }
+      }
+      requestAnimationFrame(animate)
+    }
+  }, [isInView, from, to, duration])
 
   return (
     <motion.span
@@ -434,23 +453,7 @@ export function CounterReveal({
       animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
       transition={{ duration: 0.5, ease: appleEasing }}
     >
-      {prefix}
-      <motion.span
-        initial={{ textContent: from.toString() }}
-        animate={isInView ? { textContent: to.toString() } : { textContent: from.toString() }}
-        transition={{
-          duration,
-          ease: 'easeOut',
-          delay: 0.2
-        }}
-        onUpdate={(latest) => {
-          if (typeof latest.textContent === 'string') {
-            const current = parseFloat(latest.textContent)
-            latest.textContent = Math.round(current).toString()
-          }
-        }}
-      />
-      {suffix}
+      {prefix}{count}{suffix}
     </motion.span>
   )
 }
