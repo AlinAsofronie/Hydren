@@ -1,22 +1,36 @@
-'use client'
-
-import Head from 'next/head'
-import Link from 'next/link'
-import { motion } from 'framer-motion'
+import type { Metadata } from 'next'
+import { SmoothReveal, StaggeredReveal, TextReveal, ScaleReveal } from '@/components/animations/SmoothReveal'
+import { ParallaxSection, MagneticElement } from '@/components/animations/ParallaxSection'
+import { AnimatedButton } from '@/components/ui/AnimatedButton'
 import { ContactForm } from '@/components/ContactForm'
-import { FadeInSection } from '@/components/ui/FadeInSection'
-import { AnimatedCard } from '@/components/ui/AnimatedCard'
-import { AnimatedTextReveal } from '@/components/ui/AnimatedTextReveal'
+
+export const metadata: Metadata = {
+  title: 'Contact Us | Water Hygiene Experts - Get Expert Advice',
+  description: 'Contact our water hygiene experts for consultations, emergency response, and compliance support. 24/7 emergency hotline available.',
+  keywords: 'contact water hygiene experts, emergency water safety, legionella consultation, HTM 04-01 support, water testing enquiries',
+  openGraph: {
+    title: 'Contact Us | Water Hygiene Experts - Get Expert Advice',
+    description: 'Contact our water hygiene experts for consultations, emergency response, and compliance support. 24/7 emergency hotline available.',
+    type: 'website',
+    url: '/contact',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Contact Us | Water Hygiene Experts - Get Expert Advice',
+    description: 'Contact our water hygiene experts for consultations, emergency response, and compliance support. 24/7 emergency hotline available.',
+  }
+}
 
 export default function ContactPage() {
   const contactMethods = [
     {
-      icon: '📞',
+      icon: '🚨',
       title: 'Emergency Hotline',
       description: 'For urgent water safety issues requiring immediate response',
       contact: '+44 20 7123 4567',
       href: 'tel:+442071234567',
-      available: '24/7 Emergency Response'
+      available: '24/7 Emergency Response',
+      color: 'medical'
     },
     {
       icon: '📧',
@@ -24,7 +38,8 @@ export default function ContactPage() {
       description: 'For routine consultations and service requests',
       contact: 'info@purewateruk.com',
       href: 'mailto:info@purewateruk.com',
-      available: 'Response within 24 hours'
+      available: 'Response within 24 hours',
+      color: 'trust'
     },
     {
       icon: '🏥',
@@ -32,15 +47,17 @@ export default function ContactPage() {
       description: 'Dedicated support for NHS trusts and healthcare facilities',
       contact: 'nhs@purewateruk.com',
       href: 'mailto:nhs@purewateruk.com',
-      available: 'Specialist healthcare team'
+      available: 'Specialist healthcare team',
+      color: 'safety'
     },
     {
-      icon: '🚨',
-      title: 'Urgent Support',
-      description: 'For non-emergency urgent matters requiring priority response',
-      contact: 'urgent@purewateruk.com',
-      href: 'mailto:urgent@purewateruk.com',
-      available: 'Response within 2-4 hours'
+      icon: '📞',
+      title: 'Technical Support',
+      description: 'For technical queries and compliance guidance',
+      contact: '+44 20 7123 4568',
+      href: 'tel:+442071234568',
+      available: 'Mon-Fri 8:00-18:00',
+      color: 'medical'
     }
   ]
 
@@ -49,215 +66,291 @@ export default function ContactPage() {
       city: 'London',
       address: '123 Healthcare Drive\nLondon SE1 2AB',
       phone: '+44 20 7123 4567',
-      region: 'Head Office - South England'
+      region: 'South East England'
     },
     {
       city: 'Manchester',
-      address: '456 Medical Centre\nManchester M1 3CD',
+      address: '456 Industrial Park\nManchester M2 3CD',
       phone: '+44 161 234 5678',
-      region: 'North England & Scotland'
+      region: 'North West England'
     },
     {
-      city: 'Cardiff',
-      address: '789 Hospital Row\nCardiff CF1 4EF',
-      phone: '+44 29 2345 6789',
-      region: 'Wales & Southwest'
+      city: 'Birmingham',
+      address: '789 Business Quarter\nBirmingham B1 4EF',
+      phone: '+44 121 345 6789',
+      region: 'Midlands'
     }
   ]
 
   const certifications = [
-    { name: 'ISO 9001:2015', description: 'Quality Management' },
-    { name: 'ISO 45001', description: 'Health & Safety' },
-    { name: 'UKAS Accredited', description: 'Laboratory Testing' },
-    { name: 'NHS Framework', description: 'Approved Supplier' },
-    { name: 'HTM 04-01', description: 'Compliant Services' },
-    { name: 'CHAS Approved', description: 'Health & Safety' }
+    { name: 'UKAS Accredited', description: 'ISO 17025 Laboratory', icon: '🏆' },
+    { name: 'NHS Framework', description: 'Approved Supplier', icon: '🏥' },
+    { name: 'ISO 9001:2015', description: 'Quality Management', icon: '📜' },
+    { name: 'HTM 04-01', description: 'Compliant Services', icon: '✅' }
   ]
 
   return (
-    <>
-      <Head>
-        <title>Contact Pure Water Solutions - Expert Water Hygiene Consultation</title>
-        <meta name="description" content="Contact Pure Water Solutions for professional water hygiene services. 24/7 emergency support, NHS approved specialists, and HTM 04-01 compliant solutions across the UK." />
-        <meta name="keywords" content="contact water hygiene services, NHS water testing, emergency legionella response, HTM 04-01 consultation, UK water compliance contact" />
-        <meta property="og:title" content="Contact Pure Water Solutions - Expert Water Hygiene Consultation" />
-        <meta property="og:description" content="Contact our NHS approved water hygiene specialists. 24/7 emergency support and HTM 04-01 compliant solutions." />
-        <link rel="canonical" href="https://purewateruk.com/contact" />
-      </Head>
-
-      <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-medical-50 to-trust-50">
-        {/* Hero Section */}
-        <section className="relative py-24 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-trust-600 to-medical-600" />
-          <div className="absolute inset-0 bg-black/20" />
-          
-          <div className="relative container mx-auto px-6 text-center text-white">
-            {/* Breadcrumb */}
-            <nav className="mb-8" aria-label="Breadcrumb">
-              <ol className="flex items-center justify-center space-x-2 text-sm opacity-80">
-                <li><Link href="/" className="hover:text-blue-200">Home</Link></li>
-                <li>/</li>
-                <li className="text-blue-200">Contact</li>
-              </ol>
-            </nav>
-
-            <AnimatedTextReveal
-              variant="slideUp"
-              className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
-            >
-              Get Expert Water
-              <span className="block text-trust-200">Hygiene Consultation</span>
-            </AnimatedTextReveal>
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <ParallaxSection className="py-32 bg-gradient-to-br from-trust-50 via-white to-medical-50">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <SmoothReveal>
+              <span className="inline-block px-4 py-2 bg-trust-100 text-trust-700 rounded-full text-sm font-medium mb-6">
+                Expert Water Hygiene Support
+              </span>
+            </SmoothReveal>
             
-            <AnimatedTextReveal
-              delay={0.3}
-              variant="slideUp" 
-              className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto leading-relaxed opacity-90"
-            >
-              Contact our NHS-approved specialists for HTM 04-01 compliant water hygiene solutions. 
-              Emergency support available 24/7.
-            </AnimatedTextReveal>
+            <TextReveal 
+              text="Get In Touch With Our Experts"
+              className="text-5xl lg:text-7xl font-bold text-neutral-900 mb-6 leading-tight"
+            />
+            
+            <SmoothReveal delay={0.3}>
+              <p className="text-xl text-neutral-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+                Whether you need emergency support, routine consultation, or compliance guidance, 
+                our team of water hygiene specialists is here to help.
+              </p>
+            </SmoothReveal>
 
-            {/* Trust Indicators */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex flex-wrap justify-center items-center gap-6 opacity-80"
-            >
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-safety-400 rounded-full" />
-                <span className="text-sm font-medium">24/7 Emergency Response</span>
+            <SmoothReveal delay={0.5}>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <AnimatedButton size="lg" className="px-8">
+                  Emergency Hotline
+                </AnimatedButton>
+                <AnimatedButton variant="secondary" size="lg">
+                  Schedule Consultation
+                </AnimatedButton>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-safety-400 rounded-full" />
-                <span className="text-sm font-medium">NHS Framework Approved</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-safety-400 rounded-full" />
-                <span className="text-sm font-medium">UKAS Accredited Testing</span>
-              </div>
-            </motion.div>
+            </SmoothReveal>
           </div>
-        </section>
+        </div>
+      </ParallaxSection>
 
-        {/* Contact Methods */}
-        <section className="py-16 -mt-12 relative z-10">
-          <div className="container mx-auto px-6">
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {contactMethods.map((method, index) => (
-                <AnimatedCard 
-                  key={method.title}
-                  delay={index * 0.1}
-                  className="p-6 text-center hover:bg-white/90"
-                >
-                  <div className="text-4xl mb-4">{method.icon}</div>
-                  <h3 className="text-lg font-semibold text-neutral-900 mb-2">
+      {/* Contact Methods */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-6">
+          <SmoothReveal className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-neutral-900 mb-6">
+              Multiple Ways to Reach Us
+            </h2>
+            <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
+              Choose the contact method that best suits your needs and urgency level.
+            </p>
+          </SmoothReveal>
+
+          <StaggeredReveal 
+            stagger={0.15}
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
+          >
+            {contactMethods.map((method, index) => (
+              <MagneticElement key={method.title}>
+                <div className="bg-white rounded-3xl p-8 shadow-apple hover:shadow-apple-lg transition-all duration-500 h-full border border-neutral-100">
+                  <ScaleReveal delay={index * 0.1}>
+                    <div className={`w-16 h-16 bg-${method.color}-100 rounded-2xl flex items-center justify-center mb-6`}>
+                      <span className="text-2xl">{method.icon}</span>
+                    </div>
+                  </ScaleReveal>
+                  
+                  <h3 className="text-xl font-bold text-neutral-900 mb-3">
                     {method.title}
                   </h3>
-                  <p className="text-sm text-neutral-600 mb-4 leading-relaxed">
+                  
+                  <p className="text-neutral-600 mb-4 leading-relaxed text-sm">
                     {method.description}
                   </p>
-                  <a
-                    href={method.href}
-                    className="font-semibold text-medical-600 hover:text-medical-700 transition-colors block mb-2"
-                  >
-                    {method.contact}
-                  </a>
-                  <p className="text-xs text-neutral-500">{method.available}</p>
-                </AnimatedCard>
-              ))}
-            </div>
-          </div>
-        </section>
+                  
+                  <div className="mb-4">
+                    <a 
+                      href={method.href}
+                      className={`text-${method.color}-600 font-semibold hover:text-${method.color}-700 transition-colors`}
+                    >
+                      {method.contact}
+                    </a>
+                  </div>
+                  
+                  <div className={`text-xs text-${method.color}-500 bg-${method.color}-50 px-3 py-1 rounded-full inline-block`}>
+                    {method.available}
+                  </div>
+                </div>
+              </MagneticElement>
+            ))}
+          </StaggeredReveal>
+        </div>
+      </section>
 
-        {/* Contact Form Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-6">
-            <div className="grid lg:grid-cols-3 gap-12 items-start">
-              {/* Form */}
-              <div className="lg:col-span-2">
+      {/* Contact Form Section */}
+      <ParallaxSection className="py-24 bg-gradient-to-br from-neutral-50 to-medical-50">
+        <div className="container mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
+            <SmoothReveal>
+              <div className="lg:sticky lg:top-8">
+                <h2 className="text-4xl font-bold text-neutral-900 mb-6">
+                  Send Us a Message
+                </h2>
+                <p className="text-xl text-neutral-600 mb-8 leading-relaxed">
+                  Complete the form below and our team will respond promptly with 
+                  the information and assistance you need.
+                </p>
+                
+                <div className="space-y-6">
+                  <div className="flex items-center">
+                    <div className="w-12 h-12 bg-medical-100 rounded-full flex items-center justify-center mr-4">
+                      <span className="text-medical-600">⚡</span>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-neutral-900">Fast Response</h3>
+                      <p className="text-neutral-600 text-sm">Most enquiries answered within 24 hours</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center">
+                    <div className="w-12 h-12 bg-trust-100 rounded-full flex items-center justify-center mr-4">
+                      <span className="text-trust-600">🔒</span>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-neutral-900">Secure & Confidential</h3>
+                      <p className="text-neutral-600 text-sm">Your information is protected and confidential</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center">
+                    <div className="w-12 h-12 bg-safety-100 rounded-full flex items-center justify-center mr-4">
+                      <span className="text-safety-600">👥</span>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-neutral-900">Expert Team</h3>
+                      <p className="text-neutral-600 text-sm">Answered by qualified water hygiene specialists</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </SmoothReveal>
+
+            <SmoothReveal delay={0.3} direction="right">
+              <div className="bg-white rounded-3xl p-8 shadow-apple">
                 <ContactForm />
               </div>
-
-              {/* Sidebar */}
-              <div className="space-y-8">
-                {/* Office Locations */}
-                <FadeInSection>
-                  <AnimatedCard className="p-6">
-                    <h3 className="text-2xl font-semibold text-neutral-900 mb-6">
-                      📍 Office Locations
-                    </h3>
-                    <div className="space-y-6">
-                      {offices.map((office) => (
-                        <div key={office.city}>
-                          <h4 className="font-semibold text-neutral-900">{office.city}</h4>
-                          <p className="text-sm text-neutral-600 whitespace-pre-line mb-1">
-                            {office.address}
-                          </p>
-                          <a 
-                            href={`tel:${office.phone.replace(/\s/g, '')}`}
-                            className="text-sm text-medical-600 hover:text-medical-700 transition-colors"
-                          >
-                            {office.phone}
-                          </a>
-                          <p className="text-xs text-neutral-500 mt-1">{office.region}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </AnimatedCard>
-                </FadeInSection>
-
-                {/* Certifications */}
-                <FadeInSection delay={0.2}>
-                  <AnimatedCard className="p-6">
-                    <h3 className="text-2xl font-semibold text-neutral-900 mb-6">
-                      🏆 Certifications
-                    </h3>
-                    <div className="grid grid-cols-2 gap-3">
-                      {certifications.map((cert) => (
-                        <div key={cert.name} className="text-center p-3 bg-medical-50 rounded-lg">
-                          <div className="font-semibold text-sm text-neutral-900">{cert.name}</div>
-                          <div className="text-xs text-neutral-600">{cert.description}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </AnimatedCard>
-                </FadeInSection>
-
-                {/* Business Hours */}
-                <FadeInSection delay={0.4}>
-                  <AnimatedCard className="p-6">
-                    <h3 className="text-2xl font-semibold text-neutral-900 mb-6">
-                      🕒 Business Hours
-                    </h3>
-                    <div className="space-y-3">
-                      <div className="flex justify-between">
-                        <span className="text-neutral-600">Monday - Friday</span>
-                        <span className="font-medium">8:00 AM - 6:00 PM</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-neutral-600">Saturday</span>
-                        <span className="font-medium">9:00 AM - 5:00 PM</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-neutral-600">Sunday</span>
-                        <span className="font-medium">Emergency Only</span>
-                      </div>
-                      <div className="pt-3 border-t border-neutral-200">
-                        <div className="flex justify-between">
-                          <span className="text-red-600 font-medium">Emergency</span>
-                          <span className="text-red-600 font-medium">24/7 Available</span>
-                        </div>
-                      </div>
-                    </div>
-                  </AnimatedCard>
-                </FadeInSection>
-              </div>
-            </div>
+            </SmoothReveal>
           </div>
-        </section>
-      </div>
-    </>
+        </div>
+      </ParallaxSection>
+
+      {/* Office Locations */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-6">
+          <SmoothReveal className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-neutral-900 mb-6">
+              Our Locations
+            </h2>
+            <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
+              With offices across the UK, we provide local expertise and 
+              rapid response capabilities nationwide.
+            </p>
+          </SmoothReveal>
+
+          <StaggeredReveal 
+            stagger={0.2}
+            className="grid md:grid-cols-3 gap-8"
+          >
+            {offices.map((office) => (
+              <MagneticElement key={office.city}>
+                <div className="text-center bg-gradient-to-br from-neutral-50 to-medical-50 rounded-3xl p-8">
+                  <div className="bg-white rounded-2xl p-6 shadow-apple">
+                    <h3 className="text-xl font-bold text-neutral-900 mb-4">
+                      {office.city}
+                    </h3>
+                    
+                    <div className="mb-4">
+                      <div className="w-16 h-16 bg-medical-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-2xl">🏢</span>
+                      </div>
+                      <p className="text-neutral-600 text-sm whitespace-pre-line mb-3">
+                        {office.address}
+                      </p>
+                      <p className="text-medical-600 font-semibold mb-2">
+                        {office.phone}
+                      </p>
+                      <p className="text-xs text-neutral-500">
+                        Serving {office.region}
+                      </p>
+                    </div>
+                    
+                    <AnimatedButton variant="ghost" size="sm">
+                      Get Directions
+                    </AnimatedButton>
+                  </div>
+                </div>
+              </MagneticElement>
+            ))}
+          </StaggeredReveal>
+        </div>
+      </section>
+
+      {/* Certifications */}
+      <ParallaxSection className="py-24 bg-gradient-to-br from-trust-50 to-neutral-50">
+        <div className="container mx-auto px-6">
+          <SmoothReveal className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-neutral-900 mb-6">
+              Trusted & Accredited
+            </h2>
+            <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
+              Our certifications and accreditations demonstrate our commitment 
+              to the highest professional standards.
+            </p>
+          </SmoothReveal>
+
+          <div className="grid md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+            {certifications.map((cert, index) => (
+              <SmoothReveal key={cert.name} delay={index * 0.1}>
+                <div className="bg-white rounded-2xl p-6 shadow-apple text-center">
+                  <div className="w-16 h-16 bg-trust-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl">{cert.icon}</span>
+                  </div>
+                  <h3 className="font-bold text-neutral-900 mb-2">
+                    {cert.name}
+                  </h3>
+                  <p className="text-sm text-neutral-600">
+                    {cert.description}
+                  </p>
+                </div>
+              </SmoothReveal>
+            ))}
+          </div>
+        </div>
+      </ParallaxSection>
+
+      {/* Emergency CTA */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-6">
+          <SmoothReveal>
+            <MagneticElement>
+              <div className="bg-gradient-to-br from-medical-600 to-trust-600 rounded-3xl p-12 text-center text-white max-w-4xl mx-auto">
+                <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <span className="text-3xl">🚨</span>
+                </div>
+                <h2 className="text-4xl font-bold mb-6">
+                  Water Safety Emergency?
+                </h2>
+                <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+                  If you&apos;re experiencing a water safety emergency or urgent compliance issue, 
+                  contact our emergency response team immediately.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <a href="tel:+442071234567">
+                    <AnimatedButton size="lg" className="bg-white text-medical-600 hover:bg-neutral-50">
+                      Call Emergency Hotline
+                    </AnimatedButton>
+                  </a>
+                  <AnimatedButton variant="secondary" size="lg" className="border-white text-white hover:bg-white/10">
+                    Emergency Email
+                  </AnimatedButton>
+                </div>
+              </div>
+            </MagneticElement>
+          </SmoothReveal>
+        </div>
+      </section>
+    </div>
   )
 }
